@@ -75,6 +75,67 @@ void computerMove()
         }
     }
 }
+
+// Function to check for a win or a draw
+char checkWinner()
+{
+    // Check rows
+    for (int i = 0; i < 3; i++)
+    {
+        if (board[i][0] != ' ' &&
+            board[i][0] == board[i][1] &&
+            board[i][1] == board[i][2])
+            {
+                return board[i][0];
+            }
+    }
+
+    // Check columns
+    for (int i = 0; i < 3; i++)
+    {
+        if (board[0][i] != ' ' &&
+            board[0][i] == board[1][i] &&
+            board[1][i] == board[2][i])
+            {
+                return board[0][i];
+            }
+    }
+
+    // Check diagonals
+    if (board[0][0] != ' ' &&
+        board[0][0] == board[1][1] &&
+        board[1][1] == board[2][2])
+        {
+            return board[0][0];
+        }
+    
+    if (board[0][2] != ' ' &&
+        board[0][2] == board[1][1] &&
+        board[1][1] == board[2][0])
+        {
+            return board[0][2];
+        }
+
+    // Check for draw
+    int emptyFound = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                emptyFound = 1;
+            }
+        }
+    }
+    if (!emptyFound)
+    {
+        return 'D'; // Draw
+    }
+
+    return ' '; // Game still ongoing
+}
+
 // Test functions in main for now
 int main()
 {
@@ -85,8 +146,34 @@ int main()
         printBoard();
         playerMove();
 
+        char result = checkWinner();
+        if (result == 'X')
+        {
+            printBoard();
+            printf("You win!\n");
+            break;
+        } else if (result == 'D')
+        {
+            printBoard();
+            printf("It's a draw!\n");
+            break;
+        }
+
         printBoard();
         computerMove();
+
+        result = checkWinner();
+        if (result == 'O')
+        {
+            printBoard();
+            printf("Computer wins!\n");
+            break;
+        } else if (result == 'D')
+        {
+            printBoard();
+            printf("It's a draw!\n");
+            break;
+        }
     }
 
     return 0;
