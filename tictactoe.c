@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 // Define a 3x3 Tic Tac Toe board
 char board[3][3];
@@ -54,6 +56,25 @@ void playerMove()
     }
 }
 
+// Function for computer's random move
+void computerMove()
+{
+    int row, col;
+
+    // Find the first available empty spot
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j <3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                board[i][j] = 'O'; // Computer is 'O'
+                printf("Computer chose: %d %d\n", i + 1, j + 1);
+                return;
+            }
+        }
+    }
+}
 // Test functions in main for now
 int main()
 {
@@ -64,7 +85,8 @@ int main()
         printBoard();
         playerMove();
 
-        
+        printBoard();
+        computerMove();
     }
 
     return 0;
