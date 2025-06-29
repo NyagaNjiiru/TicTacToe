@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+// findBestMove function prototype
+void findBestMove(int *bestRow, int *bestCol);
+
+
 // Define a 3x3 Tic Tac Toe board
 char board[3][3];
 
@@ -63,20 +67,6 @@ void computerMove()
     findBestMove(&row, &col);
     board[row][col] = 'O';
     printf("Computer chose: %d %d\n", row + 1, col + 1);
-
-    // Find the first available empty spot
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j <3; j++)
-        {
-            if (board[i][j] == ' ')
-            {
-                board[i][j] = 'O'; // Computer is 'O'
-                printf("Computer chose: %d %d\n", i + 1, j + 1);
-                return;
-            }
-        }
-    }
 }
 
 // Function to check for a win or a draw
