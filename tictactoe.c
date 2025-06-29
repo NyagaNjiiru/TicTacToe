@@ -60,6 +60,9 @@ void playerMove()
 void computerMove()
 {
     int row, col;
+    findBestMove(&row, &col);
+    board[row][col] = 'O';
+    printf("Computer chose: %d %d\n", row + 1, col + 1);
 
     // Find the first available empty spot
     for (int i = 0; i < 3; i++)
@@ -167,6 +170,95 @@ int evaluate()
 
     return 0; // No winner
 } 
+
+// Minimax algorithm
+int minimax(int depth, int isMax)
+{
+    int score = evaluate();
+
+    // Terminal state: someone won
+    if (score == 10 || score == -10)
+        return score;
+
+    // Check for draw (no moves left)
+    int movesLeft = 0;
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (board[i][j] == ' ')
+                movesLeft = 1;
+
+    if (!movesLeft)
+        return 0;
+
+    // Maximizer (Computer)
+    if (isMax)
+    {
+        int best = -1000;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i][j] == ' ')
+                {
+                    board[i][j] = 'O';
+                    int val = minimax(depth + 1, 0);
+                    best = (val > best) ? val : best;
+                    board[i][j] = ' ';
+                }
+            }
+        }
+        return best;
+    }
+
+    // Minimizer (Player)
+    else
+    {
+        int best = 1000;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i][j] == ' ')
+                {
+                    board[i][j] = 'X';
+                    int val = minimax(depth + 1, 1);
+                    best = (val < best) ? val : best;
+                    board[i][j] = ' ';
+                }
+            }
+        }
+        return best;
+    }
+}
+
+
+// Function for computer's optimal move using Minimax
+void findBestMove(int *bestRow, int *bestCol)
+{
+    int bestVal = -1000;
+    *bestRow = -1;
+    *bestCol = -1;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                board[i][j] = 'O'; // Computer's move
+                int moveVal = minimax(0, 0);
+                board[i][j] = ' '; // Undo move
+
+                if (moveVal > bestVal)
+                {
+                    *bestRow = i;
+                    *bestCol = j;
+                    bestVal = moveVal;
+                }
+            }
+        }
+    }
+}
 
 // Test functions in main for now
 int main()
